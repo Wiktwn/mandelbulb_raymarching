@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<head>
+    <!-- tab title & icon -->
+    <title>Raymarching in WebGL</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <!-- fonts & stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+
+    <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@v0.177.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@v0.177.0/examples/jsm/"
+      }
+    }
+    </script>
+
+    <script src="libraries/jquery-3.7.1.min.js"></script>
+    <script src="scripts/main.js" type="module"></script>
+</head>
+<body>
+    <div id="render_container">
+      <p id="telemetry_overlay">fps:</p>
+    </div>
+</body>
