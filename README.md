@@ -5,4 +5,4 @@ wasd and mouse for movement\
 p to pause\
 left and right arrow keys to step the animation forwards and backwards manually
 
-#### <ins>[Pages Link]([https://pages.github.com/](https://wiktwn.github.io/mandelbulb_raymarching/))
+#### <ins>[Pages Build](https://wiktwn.github.io/mandelbulb_raymarching/)
