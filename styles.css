@@ -1,0 +1,12 @@
+body {
+    margin: 0px;
+}
+
+p#telemetry_overlay {
+    position: absolute;
+    color: white;
+}
+
+canvas:focus {
+    outline: none;
+}
