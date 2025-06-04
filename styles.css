@@ -27,6 +27,8 @@ div#controls_submission {
 
 div#controls_submission p {
     color: white;
-    font-size:xx-large;
+    font-size:x-large;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+    text-align: center;
 }
