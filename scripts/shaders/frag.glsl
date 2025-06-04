@@ -19,6 +19,10 @@ uniform float u_ambient_intensity;
 uniform float u_shininess;
 
 uniform float u_time;
+uniform float u_time_factor;
+
+uniform float u_power_amplitude;
+uniform float u_power_offset;
 
 float sd_sphere(vec3 p, float r)
 {
@@ -73,7 +77,7 @@ float mandelbulb_sdf(vec3 p, float power)
     return 0.5 * log(r) * r / dr;
 }
 
-float mandelbulb_sdf_2( in vec3 p)
+float mandelbulb_sdf_2(vec3 p, float power)
 {
     vec3 w = p;
     float m = dot(w,w);
@@ -81,18 +85,18 @@ float mandelbulb_sdf_2( in vec3 p)
     // vec4 trap = vec4(abs(w),m);
 	float dz = 1.0;
     
-	for( int i=0; i<4; i++ )
+	for( int i=0; i<6; i++ )
     {
         // trigonometric version (MUCH faster than polynomial)
         
         // dz = 8*z^7*dz
-		dz = 8.0*pow(m,3.5)*dz + 1.0;
+		dz = power*pow(m,3.5)*dz + 1.0;
       
         // z = z^8+c
         float r = length(w);
-        float b = 8.0*acos( w.y/r);
-        float a = 8.0*atan( w.x, w.z );
-        w = p + pow(r,8.0) * vec3( sin(b)*sin(a), cos(b), sin(b)*cos(a) );
+        float b = power*acos( w.y/r);
+        float a = power*atan( w.x, w.z );
+        w = p + pow(r,8.0) * vec3(sin(b)*sin(a),cos(b),sin(b)*cos(a));
 
         m = dot(w,w);
 		if( m > 256.0 )
@@ -107,7 +111,7 @@ float mandelbulb_sdf_2( in vec3 p)
 
 vec2 march_ray(vec3 origin, vec3 direction)
 {
-    float ray_distance = 0.0;
+    float ray_distance = 0.0; 
     float scene_distance;
     vec3 ray_position;
     
@@ -119,7 +123,7 @@ vec2 march_ray(vec3 origin, vec3 direction)
         // get the distance from the scene to the raymarch
         // scene_distance = scene(ray_position);
         // scene_distance = mandelbulb_sdf(ray_position, 8.0);
-        scene_distance = mandelbulb_sdf_2(ray_position);
+        scene_distance = mandelbulb_sdf_2(ray_position, (u_power_amplitude * sin(u_time * u_time_factor)) + u_power_amplitude + u_power_offset);
 
         // check if the ray is out of bounds or collided
         if (scene_distance < u_threshold || scene_distance >= u_max_distance) break;
@@ -173,7 +177,8 @@ void main()
         // float ambient = u_ambient_intensity;
 
         // color = u_light_color * (vec3(1.0, 1.0, 1.0) * (diffuse + spectral + ambient));
-        color += vec3(ray_data.y / 100.0);
+        color += vec3(ray_data.y / float(u_max_steps));
+        // color += vec3(1.0);
     }
 
     gl_FragColor = vec4(color, 1.0);
